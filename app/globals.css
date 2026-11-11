@@ -1,26 +1,183 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ink: #14201a;
+  --ink-soft: #2a3b32;
+  --sage: #4a6b5a;
+  --sage-deep: #2f4a3c;
+  --lotus: #c4877e;
+  --lotus-deep: #a86b63;
+  --petal: #f6eeeb;
+  --mist: #eef3f0;
+  --fog: #dce6e0;
+  --champagne: #b59868;
+  --surface: #faf8f6;
+  --surface-elevated: #ffffff;
+  --line: rgba(20, 32, 26, 0.1);
+  --line-strong: rgba(20, 32, 26, 0.18);
+  --background: var(--surface);
+  --foreground: var(--ink);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-sage: var(--sage);
+  --color-sage-deep: var(--sage-deep);
+  --color-lotus: var(--lotus);
+  --color-lotus-deep: var(--lotus-deep);
+  --color-petal: var(--petal);
+  --color-mist: var(--mist);
+  --color-fog: var(--fog);
+  --color-champagne: var(--champagne);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --font-sans: var(--font-outfit);
+  --font-display: var(--font-cormorant);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--lotus) 35%, white);
+  color: var(--ink);
+}
+
+/* Atmospheric mesh for hero & section washes */
+.bg-lotus-mesh {
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(196, 135, 126, 0.28), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 85% 15%, rgba(74, 107, 90, 0.22), transparent 50%),
+    radial-gradient(ellipse 60% 45% at 50% 90%, rgba(181, 152, 104, 0.18), transparent 55%),
+    linear-gradient(165deg, #f7f3f0 0%, #eef3f0 45%, #f4ebe8 100%);
+}
+
+.bg-section-sage {
+  background:
+    radial-gradient(ellipse 70% 50% at 100% 0%, rgba(196, 135, 126, 0.12), transparent 50%),
+    linear-gradient(180deg, var(--mist) 0%, var(--surface) 100%);
+}
+
+.bg-section-petal {
+  background:
+    radial-gradient(ellipse 60% 40% at 0% 100%, rgba(74, 107, 90, 0.1), transparent 55%),
+    linear-gradient(180deg, var(--petal) 0%, var(--surface) 100%);
+}
+
+.bg-deep-grove {
+  background:
+    radial-gradient(ellipse 50% 40% at 80% 20%, rgba(196, 135, 126, 0.18), transparent 55%),
+    radial-gradient(ellipse 40% 35% at 10% 80%, rgba(181, 152, 104, 0.12), transparent 50%),
+    linear-gradient(160deg, #1a2a22 0%, #14201a 55%, #1e3328 100%);
+}
+
+/* Reveal animations */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes soft-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes draw-line {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.animate-rise {
+  animation: rise-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-fade {
+  animation: fade-in 1s ease both;
+}
+
+.animate-float {
+  animation: soft-float 7s ease-in-out infinite;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(1.1rem);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  will-change: auto;
+}
+
+.reveal-delay-1 {
+  transition-delay: 0.1s;
+}
+.reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+.reveal-delay-3 {
+  transition-delay: 0.3s;
+}
+.reveal-delay-4 {
+  transition-delay: 0.4s;
+}
+
+/* Decorative lotus mark */
+.lotus-mark {
+  filter: drop-shadow(0 12px 40px rgba(20, 32, 26, 0.12));
 }
